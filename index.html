@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora do PPR para ansiosos da DIRCOM </title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .calculadora {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        .calculadora h2 {
+            text-align: center;
+            color: #333;
+            margin-top: 0;
+        }
+        .campo {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .resultado {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="calculadora">
+    <h2>Cálculo de Rendimentos</h2>
+    
+    <div class="campo">
+        <label for="rendimentos">Total de Rendimentos em 2025 (R$)</label>
+        <input type="text" id="rendimentos" placeholder="Ex: 125.837,40" inputmode="numeric">
+    </div>
+    
+    <div class="campo">
+        <label for="nota">Nota do seu Plano de Ação</label>
+        <input type="text" id="nota" placeholder="Ex: 91,10" inputmode="numeric">
+    </div>
+    
+    <div class="campo">
+        <label for="meses">Meses Trabalhados</label>
+        <input type="number" id="meses" placeholder="Ex: 12" min="1" max="12">
+    </div>
+    
+    <button onclick="calcular()">Calcular Resultado</button>
+
+    <div id="resultado" class="resultado"></div>
+</div>
+
+<script>
+    // Função para arrumar os números no padrão brasileiro
+    function converterParaNumero(valorString) {
+        if (!valorString) return NaN;
+        // Tira os pontos de milhar e troca a vírgula por ponto decimal
+        let numeroFormatado = valorString.replace(/\./g, '').replace(',', '.');
+        return parseFloat(numeroFormatado);
+    }
+
+    function calcular() {
+        const rendimentosString = document.getElementById('rendimentos').value;
+        const notaString = document.getElementById('nota').value;
+        const mesesString = document.getElementById('meses').value;
+
+        // 1. Converte os textos para números de verdade
+        const rendimentos = converterParaNumero(rendimentosString);
+        const nota = converterParaNumero(notaString);
+        const meses = parseFloat(mesesString);
+
+        const divResultado = document.getElementById('resultado');
+
+        // 2. Verifica se algum campo ficou em branco ou com texto inválido
+        if (isNaN(rendimentos) || isNaN(nota) || isNaN(meses)) {
+            divResultado.style.display = 'block';
+            divResultado.style.color = 'red';
+            divResultado.innerText = "Por favor, preencha todos os campos corretamente.";
+            return;
+        }
+
+        // 3. Transforma a nota em percentual
+        const percentualPlano = nota / 100;
+
+        // 4. Aplica a fórmula
+        const valorFinal = (rendimentos / 12) * 1.0 * percentualPlano * (meses / 12);
+
+        // 5. Exibe o resultado formatado
+        divResultado.style.display = 'block';
+        divResultado.style.color = '#333';
+        divResultado.innerText = "Resultado: " + valorFinal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+</script>
+
+</body>
+</html>
