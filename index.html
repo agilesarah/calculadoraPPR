@@ -78,8 +78,8 @@
     <h2>Calculadora do PPR para ansiosos da DIRCOM </h2>
     
     <div class="campo">
-        <label for="rendimentos">Total de Rendimentos em 2025 (R$)</label>
-        <input type="text" id="rendimentos" placeholder="Ex: 125.837,40" inputmode="numeric">
+        <label for="rendimentos">Média de remuneração em 2025 (R$)</label>
+        <input type="text" id="media_remu" placeholder="Ex: 125.837,40" inputmode="numeric">
     </div>
     
     <div class="campo">
@@ -130,7 +130,7 @@
         const percentualPlano = nota / 100;
 
         // 4. Aplica a fórmula
-        const valorFinal = (rendimentos / 12) * 1.0 * percentualPlano * (meses / 12);
+        const valorFinal = media_remu * 1.0 * percentualPlano * (meses / 12);
 
         // 5. Exibe o resultado formatado
         divResultado.style.display = 'block';
